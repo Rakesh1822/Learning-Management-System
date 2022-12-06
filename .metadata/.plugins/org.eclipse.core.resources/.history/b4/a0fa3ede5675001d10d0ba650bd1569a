@@ -1,0 +1,16 @@
+package com.te.lms.entity;
+
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
+
+public class Batch {
+
+	private String batchId;
+	
+	private String batchName;
+	
+	@OneToOne
+	@JoinColumn(name="mentor_fk")
+	private Mentor mentor;
+	
+}

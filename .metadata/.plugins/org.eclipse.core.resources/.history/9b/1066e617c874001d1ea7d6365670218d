@@ -1,0 +1,17 @@
+package com.te.lms.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
+
+import com.te.lms.entity.TechnicalSkills;
+
+@Repository
+public interface TechnicalSkillsRepository extends JpaRepository<TechnicalSkills, Integer> {
+
+	@Query(value = "select * from employee_technicalskills_info where employee_fk=?1", nativeQuery = true)
+	List<TechnicalSkills> findSkills(String empId);
+
+}

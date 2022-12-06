@@ -1,0 +1,15 @@
+package com.te.lms.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import com.te.lms.entity.EducationDetails;
+
+public interface EducationDetailsRepository extends JpaRepository<EducationDetails, Integer> {
+
+	@Query(value = "select * from employee_education_info where employee_fk=?1", nativeQuery = true)
+	List<EducationDetails> findEducationDetails(String empId);
+
+}

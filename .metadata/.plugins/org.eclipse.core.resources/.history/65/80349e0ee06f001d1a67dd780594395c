@@ -1,0 +1,13 @@
+package com.te.lms.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.te.lms.entity.AddressDetails;
+
+public interface AddressDetailsRepository extends JpaRepository<AddressDetails, Integer> {
+
+	List<AddressDetails> findAddressDetails(String empId);
+
+}

@@ -1,0 +1,9 @@
+
+	java:S116 "MRename this field "Id" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(×­ÒÒ8ØÍ„­È0HüRMINORZ
+CODE_SMELL
+o
+java:S1128"7Remove this unused import 'javax.persistence.EnumType'.(ˆ«¨–üÿÿÿÿ8åàÊÈ0H—RMINORZ
+CODE_SMELL
+q
+java:S1128"9Remove this unused import 'javax.persistence.Enumerated'.(¡ùşßûÿÿÿÿ8åàÊÈ0H™RMINORZ
+CODE_SMELL

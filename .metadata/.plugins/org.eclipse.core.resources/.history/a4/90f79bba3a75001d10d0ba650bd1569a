@@ -1,0 +1,21 @@
+package com.te.lms.communication;
+
+import java.util.Properties;
+
+public class Notify {
+
+	public Boolean sendEmail(String message, String emailId) {
+		String host = "stmp.gmail.com";
+		
+		Properties properties = System.getProperties();
+		
+		properties.put("mail.stmp.host", host);
+		properties.put("mail.stmp.port", "465");
+		properties.put("mail.stmp.ssl.enable","true");
+		properties.put("mail.stmp.auth","true");
+		
+	}
+	
+	
+	
+}

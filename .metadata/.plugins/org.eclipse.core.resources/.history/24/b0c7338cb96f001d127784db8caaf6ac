@@ -1,0 +1,37 @@
+package com.te.lms.dto;
+
+import java.time.LocalDate;
+import java.util.List;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+public class UpdateDto {
+
+	private String bloodGroup;
+
+	private LocalDate employeeDOB;
+	
+	private String employeeNationality;
+	
+	private SecondaryInfoDto secondaryInfoDto;
+
+	private List<EducationDetailsDto> educationDetails;
+
+	private List<AddressDetailsDto> addressDetails;
+
+	private BankDetailsDto bankDetails;
+
+	private List<TechnicalSkillsDto> technicalSkills;
+
+	private List<ExperienceDto> experience;
+
+	private List<ContactDto> contact;
+
+}

@@ -1,0 +1,10 @@
+package com.te.lms.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.te.lms.entity.SecondaryInfo;
+
+public interface SecondaryInfoRepository extends JpaRepository<SecondaryInfo, Integer> {
+
+	
+}

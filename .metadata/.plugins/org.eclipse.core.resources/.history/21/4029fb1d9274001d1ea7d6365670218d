@@ -1,0 +1,15 @@
+package com.te.lms.repository;
+
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import com.te.lms.entity.SecondaryInfo;
+
+public interface SecondaryInfoRepository extends JpaRepository<SecondaryInfo, Integer> {
+
+	@Query(value = "SELECT * FROM employee_secondary_info where employee_fk=?1", nativeQuery = true)
+	Optional<SecondaryInfo> findSecondaryInfo(String empId);
+
+}

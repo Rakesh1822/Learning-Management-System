@@ -1,0 +1,22 @@
+package com.te.lms.dto;
+
+import java.time.LocalDate;
+import java.util.List;
+
+public class NewBatchDto {
+
+	private String BatchId;
+
+	private String batchName;
+
+	private String mentorName;
+
+	private List<TechnologiesDto> technologiesDto;
+
+	private LocalDate startDate;
+
+	private LocalDate endDate;
+
+	private String status;
+
+}

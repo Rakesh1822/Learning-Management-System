@@ -1,0 +1,32 @@
+package com.te.lms.entity;
+
+import java.time.LocalDate;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToOne;
+
+import com.te.lms.enums.BatchStatus;
+
+public class Batch {
+
+	private String batchId;
+	
+	private String batchName;
+	
+	@OneToOne
+	@JoinColumn(name="mentor_fk")
+	private Mentor mentor;
+	
+	@ManyToMany(mappedBy = "batch",cascade = CascadeType.ALL)
+	private List<Technologies> technologies;
+	
+	private LocalDate startDate;
+	
+	private LocalDate endDate;
+	
+	private BatchStatus batchStatus;
+	
+}

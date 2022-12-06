@@ -1,0 +1,13 @@
+package com.te.lms.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.te.lms.entity.EducationDetails;
+
+public interface EducationDetailsRepository extends JpaRepository<EducationDetails, Integer>{
+
+	List<EducationDetails> findByEmployee(String empId);
+
+}

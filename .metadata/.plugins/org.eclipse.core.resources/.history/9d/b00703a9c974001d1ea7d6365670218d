@@ -1,0 +1,161 @@
+package com.te.lms.service.implementation;
+
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.BeanUtils;
+import org.springframework.stereotype.Service;
+
+import com.te.lms.dto.RegistrationDto;
+import com.te.lms.dto.UpdateDto;
+import com.te.lms.entity.AddressDetails;
+import com.te.lms.entity.BankDetails;
+import com.te.lms.entity.Contact;
+import com.te.lms.entity.EducationDetails;
+import com.te.lms.entity.Employee;
+import com.te.lms.entity.Experience;
+import com.te.lms.entity.SecondaryInfo;
+import com.te.lms.entity.TechnicalSkills;
+import com.te.lms.repository.EmployeeRepository;
+import com.te.lms.repository.RequestsRepository;
+import com.te.lms.service.EmployeeService;
+
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class EmployeeServiceImpl implements EmployeeService {
+
+	private final EmployeeRepository employeeRepository;
+	private final RequestsRepository requestsRepository;
+
+	@Override
+	public Optional<String> register(RegistrationDto registrationDto) {
+
+		Employee employee = new Employee();
+		BeanUtils.copyProperties(registrationDto, employee);
+
+		SecondaryInfo secondaryInfo = ConvertToEntity.toSecondaryInfo(registrationDto.getSecondaryInfoDto());
+		employee.setSecondaryInfo(secondaryInfo);
+		secondaryInfo.setEmployee(employee);
+
+		BankDetails bankDetails = ConvertToEntity.toBankDetails(registrationDto.getBankDetailsDto());
+		employee.setBankDetails(bankDetails);
+		bankDetails.setEmployee(employee);
+
+		List<EducationDetails> educationDetails = ConvertToEntity
+				.toEducationDetails(registrationDto.getEducationDetailsDto());
+		employee.setEducationDetails(educationDetails);
+		SetProperties.setEducationDetailsToEmployee(educationDetails, employee);
+
+		List<AddressDetails> addressDetails = ConvertToEntity.toAddressDetails(registrationDto.getAddressDetailsDto());
+		employee.setAddressDetails(addressDetails);
+		SetProperties.setAddressDetailsToEmployee(addressDetails, employee);
+
+		List<Experience> experience = ConvertToEntity.toExperience(registrationDto.getExperienceDto());
+		employee.setExperience(experience);
+		SetProperties.setExperienceToEmployee(experience, employee);
+
+		List<Contact> contact = ConvertToEntity.toContact(registrationDto.getContactDto());
+		employee.setContact(contact);
+		SetProperties.setContactToEmployee(contact, employee);
+
+		List<TechnicalSkills> technicalSkills = ConvertToEntity
+				.toTechnicalSkills(registrationDto.getTechnicalSkillsDto());
+		employee.setTechnicalSkills(technicalSkills);
+		SetProperties.setTechnicalSkillsToEmployee(technicalSkills, employee);
+
+		employeeRepository.save(employee);
+		return Optional.ofNullable(employee.getEmployeeId());
+
+	}
+
+	@Override
+	public Boolean update(String empId, UpdateDto updateDto) {
+
+		Optional<Employee> optEmployee = employeeRepository.findById(empId);
+		if (optEmployee.isPresent()) {
+			Employee employee = optEmployee.get();
+			employee.setBloodGroup(updateDto.getBloodGroup());
+			employee.setEmployeeDOB(updateDto.getEmployeeDOB());
+			employee.setEmployeeNationality(updateDto.getEmployeeNationality());
+
+			SecondaryInfo secondaryInfo = employee.getSecondaryInfo();
+			if (secondaryInfo != null) {
+				BeanUtils.copyProperties(updateDto.getSecondaryInfoDto(), secondaryInfo, new String[] { "sno" });
+				secondaryInfo.setEmployee(employee);
+			}
+			employee.setSecondaryInfo(secondaryInfo);
+
+			BankDetails bankDetails = employee.getBankDetails();
+			if (bankDetails != null) {
+				BeanUtils.copyProperties(updateDto.getBankDetailsDto(), bankDetails, new String[] { "sno" });
+				employee.setBankDetails(bankDetails);
+				bankDetails.setEmployee(employee);
+			}
+
+			List<EducationDetails> educationDetails = employee.getEducationDetails();
+			if (educationDetails != null) {
+				List<EducationDetails> educationDetails2 = ConvertToEntity
+						.toEducationDetails(updateDto.getEducationDetailsDto());
+				for (int i = 0; i < educationDetails2.size(); i++) {
+					BeanUtils.copyProperties(educationDetails2.get(i), educationDetails.get(i),
+							new String[] { "educationId" });
+					educationDetails2.get(i).setEmployee(employee);
+				}
+			}
+			employee.setEducationDetails(educationDetails);
+			
+			List<AddressDetails> addressDetails = employee.getAddressDetails();
+			if (addressDetails != null) {
+				List<AddressDetails> addressDetails2 = ConvertToEntity
+						.toAddressDetails(updateDto.getAddressDetailsDto());
+				for (int i = 0; i < addressDetails2.size(); i++) {
+					BeanUtils.copyProperties(addressDetails2.get(i), addressDetails.get(i),
+							new String[] { "addressId"});
+					addressDetails2.get(i).setEmployee(employee);
+				}
+			}
+			employee.setAddressDetails(addressDetails);
+			
+			List<Experience> experience = employee.getExperience();
+			if (experience != null) {
+				List<Experience> experience2 = ConvertToEntity.toExperience(updateDto.getExperienceDto());
+				for (int i = 0; i < experience2.size(); i++) {
+					BeanUtils.copyProperties(experience2.get(i), experience.get(i), new String[] { "id"});
+					experience2.get(i).setEmployee(employee);
+				}
+			}
+			employee.setExperience(experience);
+
+			List<TechnicalSkills> technicalSkills = employee.getTechnicalSkills();
+			if (technicalSkills != null) {
+				List<TechnicalSkills> technicalSkills2 = ConvertToEntity
+						.toTechnicalSkills(updateDto.getTechnicalSkillsDto());
+				for (int i = 0; i < technicalSkills2.size(); i++) {
+					BeanUtils.copyProperties(technicalSkills2.get(i), technicalSkills.get(i),
+							new String[] { "technicalId"});
+					technicalSkills2.get(i).setEmployee(employee);
+				}
+
+			}
+			employee.setTechnicalSkills(technicalSkills);
+
+			List<Contact> contact = employee.getContact();
+			if (contact != null) {
+				List<Contact> contact2 = ConvertToEntity.toContact(updateDto.getContactDto());
+				for (int i = 0; i < contact2.size(); i++) {
+					BeanUtils.copyProperties(contact2.get(i), contact.get(i), new String[] { "sno"});
+					contact2.get(i).setEmployee(employee);
+				}
+			}
+			employee.setContact(contact);
+
+			employeeRepository.save(employee);
+			return true;
+		}
+
+		return false;
+
+	}
+}

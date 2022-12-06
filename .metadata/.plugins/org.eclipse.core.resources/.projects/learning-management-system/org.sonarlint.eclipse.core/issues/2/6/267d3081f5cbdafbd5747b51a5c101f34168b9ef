@@ -1,0 +1,12 @@
+
+x	java:S116""MRename this field "Id" to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(×­ÒÒH„+RMINORZ
+CODE_SMELL
+k
+java:S1128"8Remove this unused import 'com.te.lms.enums.Experience'.(—†ôˆ8÷‰˜ÒÈ0H…+RMINORZ
+CODE_SMELL
+h
+java:S1128"0Remove this unused import 'java.time.LocalDate'.(›‘¬èýÿÿÿÿ8·µ…ÓÈ0H‡+RMINORZ
+CODE_SMELL
+`
+java:S1128"5Remove this unused import 'javax.persistence.Column'.(ìûæHH‰+RMINORZ
+CODE_SMELL

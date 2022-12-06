@@ -1,0 +1,10 @@
+package com.te.lms.dto;
+
+public class MentorDto {
+
+	private String mentorName;
+	
+	private String employeeId;
+	
+	
+}

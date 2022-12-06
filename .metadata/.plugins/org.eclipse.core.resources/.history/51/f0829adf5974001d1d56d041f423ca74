@@ -1,0 +1,17 @@
+package com.te.lms.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import com.te.lms.entity.Contact;
+
+public interface ContactRepository extends JpaRepository<Contact, Long>{
+
+	@Query(value = "select * from employee_contact_info where employee_fk=?1", nativeQuery = true)
+	List<Contact> findContact(String empId);
+
+	
+	
+}

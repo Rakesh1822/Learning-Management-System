@@ -1,0 +1,14 @@
+package com.te.lms.entity;
+
+import javax.persistence.OneToOne;
+
+public class Batch {
+
+	private String batchId;
+	
+	private String batchName;
+	
+	@OneToOne
+	private Mentor mentor;
+	
+}

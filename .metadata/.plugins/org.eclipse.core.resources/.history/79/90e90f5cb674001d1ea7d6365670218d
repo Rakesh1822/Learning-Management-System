@@ -1,0 +1,15 @@
+package com.te.lms.dto;
+
+import java.util.List;
+
+public class MentorDto {
+
+	private String mentorName;
+	
+	private String employeeId;
+	
+	private String emailId;
+	
+	private List<TechnologiesDto> skillsDto;
+	
+}

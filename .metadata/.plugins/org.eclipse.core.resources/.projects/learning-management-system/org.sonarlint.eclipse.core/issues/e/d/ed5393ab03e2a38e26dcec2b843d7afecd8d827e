@@ -1,0 +1,26 @@
+
+l
+java:S1128"9Remove this unused import 'com.te.lms.entity.Experience'.(…ˆîÃ8ÌŸòËÈ0HØ'RMINORZ
+CODE_SMELL
+q
+java:S1128">Remove this unused import 'com.te.lms.entity.TechnicalSkills'.(ó¬Ì8ÌŸòËÈ0HÚ'RMINORZ
+CODE_SMELL
+r
+java:S1128	":Remove this unused import 'com.te.lms.entity.BankDetails'.(ÃÔı…øÿÿÿÿ8ÌŸòËÈ0HÜ'RMINORZ
+CODE_SMELL
+n
+java:S1128
+"6Remove this unused import 'com.te.lms.entity.Contact'.(ä»Õ†ıÿÿÿÿ8ÌŸòËÈ0HŞ'RMINORZ
+CODE_SMELL
+q
+java:S1128"?Remove this unused import 'com.te.lms.entity.EducationDetails'.(»¶É8ÌŸòËÈ0Hà'RMINORZ
+CODE_SMELL
+d
+java:S1128"1Remove this unused import 'javax.persistence.Id'.(ş¹ŞÜ8ÌŸòËÈ0Hâ'RMINORZ
+CODE_SMELL
+t
+java:S1128"<Remove this unused import 'com.te.lms.entity.SecondaryInfo'.(ó¡²Ïÿÿÿÿÿ8ÌŸòËÈ0Hä'RMINORZ
+CODE_SMELL
+p
+java:S1128"=Remove this unused import 'com.te.lms.entity.AddressDetails'.(Ğî‚Í8ÌŸòËÈ0Hæ'RMINORZ
+CODE_SMELL
