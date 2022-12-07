@@ -1,0 +1,9 @@
+package com.te.lms.dto;
+
+public class ApproveEmployeeDto {
+
+	private String BatchId;
+	
+	private String BatchName;
+	
+}

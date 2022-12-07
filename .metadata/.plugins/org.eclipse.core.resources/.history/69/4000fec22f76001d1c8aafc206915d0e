@@ -1,0 +1,5 @@
+package com.te.lms.exceptions.handler;
+
+public class LmsExceptionHandler {
+
+}

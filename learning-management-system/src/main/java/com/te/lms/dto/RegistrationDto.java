@@ -48,8 +48,6 @@ public class RegistrationDto {
 
 	private String employeeNationality;
 
-	private EmployeeStatus employeeStatus;
-
 	private SecondaryInfoDto secondaryInfoDto;
 
 	private List<EducationDetailsDto> educationDetailsDto;

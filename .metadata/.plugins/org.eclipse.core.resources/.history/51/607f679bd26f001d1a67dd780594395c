@@ -1,7 +1,0 @@
-package com.te.lms.repository;
-
-import org.springframework.data.jpa.repository.JpaRepository;
-
-public class SecondaryInfoRepository implements JpaRepository<SecondaryInfo, Integer> {
-
-}
