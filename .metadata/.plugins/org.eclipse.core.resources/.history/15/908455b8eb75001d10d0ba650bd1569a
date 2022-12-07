@@ -58,8 +58,9 @@ public class AdminServiceImpl implements AdminService {
 			role.getAppUser().add(appUser);
 			appUserRepository.save(appUser);
 			mentorRepository.save(mentor);
-			return Optional.ofNullable("username : " + appUser.getUsername()+"\n" + " password :" + appUser.getPassword());
+			return Optional.ofNullable("username : " + appUser.getUsername() + " password :" + appUser.getPassword());
 		}
+
 		return null;
 	}
 

@@ -51,16 +51,16 @@ public class AdminServiceImpl implements AdminService {
 		mentor.setSkills(skills);
 		Optional<Roles> optRole = rolesRepository.findByRoleName("ROLE_MENTOR");
 		if (optRole.isPresent()) {
-			AppUser appUser = AppUser.builder().username(mentor.getEmployeeId()).password("Welcome123")
+			AppUser appUser = AppUser.builder().employeeId(mentor.getEmployeeId()).password("Welcome123")
 					.roles(Lists.newArrayList()).build();
 			appUser.getRoles().add(optRole.get());
 			Roles role = Roles.builder().roleName("ROLE_MENTOR").appUser(Lists.newArrayList()).build();
 			role.getAppUser().add(appUser);
 			appUserRepository.save(appUser);
 			mentorRepository.save(mentor);
-			return Optional.ofNullable("username : " + appUser.getUsername()+"\n" + " password :" + appUser.getPassword());
+			return Optional.ofNullable("username : " + mentor.getEmployeeId() + " password :" + appUser.getPassword());
 		}
-		return null;
+
 	}
 
 	@Override

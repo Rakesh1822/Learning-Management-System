@@ -28,13 +28,11 @@ public class AdminController {
 
 		Optional<String> optUser = adminService.registerMentor(mentorDto);
 		if (optUser.isPresent()) {
-			String message = "Hello " + mentorDto.getMentorName()
-					+ " your role has been updated as an mentor Please use the credentials for the accessing the Mentor features. \n "
-					+ optUser.get();
+			String message = "Hello " + mentorDto.getMentorName() + " your role has been updated as an mentor Please use the credentials for the accessing the Mentor features "+optUser.get();
 			String subject = "Congratulations";
 			String emailId = mentorDto.getEmailId();
 			notify.sendEmail(message, emailId, subject);
-			return new GeneralResponse<String>("mentor has been registered successfully", optUser.get());
+			return new GeneralResponse<String>("mentor has been registered successfully", optEmp.get());
 		}
 
 		throw new RuntimeException("Unable to register the mentor");

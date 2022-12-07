@@ -26,7 +26,7 @@ import lombok.Setter;
 public class AppUser {
 
 	@Id
-	private String username;
+	private String employeeId;
 
 	private String password;
 

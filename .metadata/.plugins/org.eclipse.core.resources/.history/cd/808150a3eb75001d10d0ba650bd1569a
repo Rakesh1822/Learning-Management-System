@@ -37,7 +37,7 @@ public class LearningManagementSystemApplication {
 
 			Admin admin01 = Admin.builder().adminId("TYC001").adminName("Rakesh Reddy").build();
 
-			AppUser adminCredentials = AppUser.builder().username(admin01.getAdminId()).password("password")
+			AppUser adminCredentials = AppUser.builder().employeeId(admin01.getAdminId()).password("password")
 					.roles(Lists.newArrayList()).build();
 
 			admin.getAppUser().add(adminCredentials);

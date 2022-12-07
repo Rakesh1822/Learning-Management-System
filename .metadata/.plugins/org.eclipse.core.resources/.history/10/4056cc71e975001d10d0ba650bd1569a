@@ -10,6 +10,6 @@ import com.te.lms.entity.Roles;
 @Repository
 public interface RolesRepository extends JpaRepository<Roles, Integer> {
 
-	Optional<Roles> findByRoleName(String string);
+	Optional<Roles> findByRollName(String string);
 
 }

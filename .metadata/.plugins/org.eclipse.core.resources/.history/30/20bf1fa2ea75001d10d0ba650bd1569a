@@ -26,15 +26,13 @@ public class AdminController {
 	@PostMapping(path = "/register/mentor")
 	public GeneralResponse<String> registerMentor(@RequestBody MentorDto mentorDto) {
 
-		Optional<String> optUser = adminService.registerMentor(mentorDto);
-		if (optUser.isPresent()) {
-			String message = "Hello " + mentorDto.getMentorName()
-					+ " your role has been updated as an mentor Please use the credentials for the accessing the Mentor features. \n "
-					+ optUser.get();
+		Optional<String> optEmp = adminService.registerMentor(mentorDto);
+		if (optEmp.isPresent()) {
+			String message = "Hello " + mentorDto.getMentorName() + " your role has been updated as an mentor";
 			String subject = "Congratulations";
 			String emailId = mentorDto.getEmailId();
 			notify.sendEmail(message, emailId, subject);
-			return new GeneralResponse<String>("mentor has been registered successfully", optUser.get());
+			return new GeneralResponse<String>("mentor has been registered successfully", optEmp.get());
 		}
 
 		throw new RuntimeException("Unable to register the mentor");
