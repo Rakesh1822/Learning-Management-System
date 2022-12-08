@@ -1,0 +1,17 @@
+package com.te.lms.repository;
+
+import java.util.List;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import com.te.lms.entity.RequestsList;
+
+public interface RequestsRepository extends JpaRepository<RequestsList, Integer >{
+
+	@Query(value = "select * from requests_list",nativeQuery = true)
+	List<RequestsList> getList();
+
+	void deleteByEmployeeId(String empId);
+
+}

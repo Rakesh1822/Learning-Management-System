@@ -8,10 +8,9 @@ import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
 import com.google.common.collect.Lists;
-import com.te.lms.enums.EmployeeStatus;
+import com.te.lms.enums.Status;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -34,13 +33,13 @@ public class Mentor {
 
 	private String emailId;
 
-	@OneToMany(mappedBy = "mentor", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "mentor",cascade = CascadeType.ALL)
 	private List<Skills> skills = Lists.newArrayList();
 
-	@OneToOne(mappedBy = "mentor", cascade = CascadeType.ALL)
-	private Batch batch;
+	@OneToMany(mappedBy = "mentor")
+	private List<Batch> batch = Lists.newArrayList();
 
 	@Enumerated(EnumType.STRING)
-	private EmployeeStatus mentorStatus;
+	private Status mentorStatus;
 
 }

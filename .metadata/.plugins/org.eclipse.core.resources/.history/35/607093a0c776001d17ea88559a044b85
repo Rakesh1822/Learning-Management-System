@@ -1,0 +1,13 @@
+package com.te.lms.dto;
+
+public class AppUserDto {
+
+	private String message;
+
+	private String username;
+
+	private String password;
+
+	private String emaild;
+
+}

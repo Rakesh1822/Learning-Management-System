@@ -3,6 +3,7 @@ package com.te.lms.dto;
 import java.time.LocalDate;
 import java.util.List;
 
+import com.google.common.collect.Lists;
 import com.te.lms.enums.BatchStatus;
 
 import lombok.AllArgsConstructor;
@@ -24,7 +25,7 @@ public class NewBatchDto {
 
 	private String mentorName;
 
-	private List<TechnologiesDto> technologiesDto;
+	private List<TechnologiesDto> technologiesDto=Lists.newArrayList();
 
 	private LocalDate startDate;
 

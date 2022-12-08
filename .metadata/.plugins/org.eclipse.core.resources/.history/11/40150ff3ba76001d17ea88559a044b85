@@ -1,0 +1,14 @@
+package com.te.lms.exceptions;
+
+public class NoBatchesFoundException extends Exception {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public NoBatchesFoundException(String message) {
+		super(message);
+	}
+
+}

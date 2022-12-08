@@ -1,0 +1,56 @@
+package com.te.lms.dto;
+
+import java.time.LocalDate;
+import java.util.List;
+
+import com.google.common.collect.Lists;
+import com.te.lms.entity.Contact;
+import com.te.lms.enums.EmployeeStatus;
+import com.te.lms.enums.Gender;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
+@Builder
+public class EmployeeDto {
+
+	private String employeeId;
+
+	private String employeeName;
+
+	private LocalDate employeeDOJ;
+
+	private LocalDate employeeDOB;
+
+	private String employeeEmailId;
+
+	private String bloodGroup;
+
+	private String employeeDesignation;
+
+	private Gender employeeGender;
+
+	private EmployeeStatus employeeStatus;
+
+	private SecondaryInfoDto secondaryInfo;
+
+	private List<EducationDetailsDto> educationDetails;
+
+	private List<AddressDetailsDto> addressDetails;
+
+	private BankDetailsDto bankDetails;
+
+	private List<TechnicalSkillsDto> technicalSkills;
+
+	private List<ExperienceDto> experience;
+
+	private List<Contact> contact = Lists.newArrayList();
+
+}

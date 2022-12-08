@@ -7,14 +7,16 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.google.common.collect.Lists;
-import com.te.lms.enums.EmployeeStatus;
 import com.te.lms.enums.Gender;
+import com.te.lms.enums.Status;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -52,7 +54,7 @@ public class Employee {
 	private String employeeNationality;
 
 	@Enumerated(EnumType.STRING)
-	private EmployeeStatus employeeStatus;
+	private Status employeeStatus;
 
 	@OneToOne(mappedBy = "employee", cascade = CascadeType.ALL)
 	private SecondaryInfo secondaryInfo;
@@ -61,18 +63,21 @@ public class Employee {
 	private List<EducationDetails> educationDetails = Lists.newArrayList();
 
 	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
-	private List<AddressDetails> addressDetails= Lists.newArrayList();
+	private List<AddressDetails> addressDetails = Lists.newArrayList();
 
 	@OneToOne(mappedBy = "employee", cascade = CascadeType.ALL)
 	private BankDetails bankDetails;
 
 	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
-	private List<TechnicalSkills> technicalSkills= Lists.newArrayList();
+	private List<TechnicalSkills> technicalSkills = Lists.newArrayList();
 
 	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
-	private List<Experience> experience= Lists.newArrayList();
+	private List<Experience> experience = Lists.newArrayList();
 
 	@OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
-	private List<Contact> contact= Lists.newArrayList();
-	
+	private List<Contact> contact = Lists.newArrayList();
+
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+	private Batch batch;
+
 }

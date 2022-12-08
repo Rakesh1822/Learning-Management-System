@@ -22,10 +22,6 @@ public class GeneralResponse<T> {
 		this.data=data;
 	}
 	
-	public GeneralResponse(String message, List<T> data) {
-		this.message=message;
-		this.data=getData();
-	}
 
 	
 

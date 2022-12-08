@@ -1,0 +1,9 @@
+package com.te.lms.exceptions;
+
+public class UnableToUpdateMentor extends RuntimeException {
+
+	public UnableToUpdateMentor(String message) {
+		super(message);
+	}
+
+}

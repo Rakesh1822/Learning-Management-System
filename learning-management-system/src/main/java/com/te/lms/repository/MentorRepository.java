@@ -1,5 +1,6 @@
 package com.te.lms.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,6 +16,9 @@ public interface MentorRepository extends JpaRepository<Mentor, String> {
 	Optional<Mentor> findByMentorName(String mentorName);
 
 	Optional<Mentor> findByEmployeeId(String empId);
+
+	@Query(value = "select * from mentor where mentor_status='ACTIVE'",nativeQuery = true)
+	Optional<List<Mentor>> getMentors();
 
 	
 

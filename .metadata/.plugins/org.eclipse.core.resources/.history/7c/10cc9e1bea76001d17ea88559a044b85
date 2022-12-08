@@ -1,0 +1,5 @@
+package com.te.lms.exceptions;
+
+public class NoDataFoundInTheListException extends Exception {
+
+}

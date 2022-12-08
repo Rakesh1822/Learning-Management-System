@@ -3,16 +3,6 @@ package com.te.lms.dto;
 import java.time.LocalDate;
 import java.util.List;
 
-import javax.persistence.Id;
-
-import com.te.lms.entity.AddressDetails;
-import com.te.lms.entity.BankDetails;
-import com.te.lms.entity.Contact;
-import com.te.lms.entity.EducationDetails;
-import com.te.lms.entity.Experience;
-import com.te.lms.entity.SecondaryInfo;
-import com.te.lms.entity.TechnicalSkills;
-import com.te.lms.enums.EmployeeStatus;
 import com.te.lms.enums.Gender;
 
 import lombok.AllArgsConstructor;
