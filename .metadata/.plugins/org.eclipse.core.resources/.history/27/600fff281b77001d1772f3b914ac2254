@@ -17,6 +17,7 @@ import com.te.lms.dto.ExperienceDto;
 import com.te.lms.dto.MentorDto;
 import com.te.lms.dto.MessageDto;
 import com.te.lms.dto.NewBatchDto;
+import com.te.lms.dto.RejectDto;
 import com.te.lms.dto.RequestsListsDto;
 import com.te.lms.dto.SecondaryInfoDto;
 import com.te.lms.dto.SkillsDto;
@@ -38,7 +39,8 @@ import com.te.lms.entity.Skills;
 import com.te.lms.entity.TechnicalSkills;
 import com.te.lms.entity.Technologies;
 import com.te.lms.enums.BatchStatus;
-import com.te.lms.enums.EmployeeStatus;
+import com.te.lms.enums.Status;
+import com.te.lms.exceptions.BatchDetailsNotFoundException;
 import com.te.lms.repository.AppUserRepository;
 import com.te.lms.repository.BatchRepository;
 import com.te.lms.repository.EmployeeRepository;
@@ -81,12 +83,15 @@ public class AdminServiceImpl implements AdminService {
 			appUser.getRoles().add(optRole.get());
 			Roles role = Roles.builder().roleName("ROLE_MENTOR").appUser(Lists.newArrayList()).build();
 			role.getAppUser().add(appUser);
-			mentor.setMentorStatus(EmployeeStatus.ACTIVE);
+			mentor.setMentorStatus(Status.ACTIVE);
 			appUserRepository.save(appUser);
 			mentorRepository.save(mentor);
-			MessageDto messageDto = MessageDto.
+			String message = "Hello " + mentor.getMentorName() + " \n" + " welcome to the team of techno elevate"
+					+ "username : " + appUser.getUsername() + "\n" + " password :" + appUser.getPassword();
+			MessageDto messageDto = MessageDto.builder().message(message).emaild(mentor.getEmailId()).build();
+			return Optional.ofNullable(messageDto);
 		}
-		return null;
+		return Optional.ofNullable(null);
 	}
 
 	@Override
@@ -97,6 +102,7 @@ public class AdminServiceImpl implements AdminService {
 			Technologies technologiesEntity = new Technologies();
 			BeanUtils.copyProperties(technologiesDto, technologiesEntity);
 			batch.getTechnologies().add(technologiesEntity);
+			batch.setStatus(Status.ACTIVE);
 			technologiesEntity.getBatch().add(batch);
 		}
 
@@ -134,7 +140,6 @@ public class AdminServiceImpl implements AdminService {
 			BeanUtils.copyProperties(updateMentorDto, mentor);
 			List<Skills> skills1 = mentor.getSkills();
 			List<Skills> skills2 = Lists.newArrayList();
-
 			for (SkillsDto skillsDto : updateMentorDto.getSkillsDto()) {
 				Skills skillEntity = new Skills();
 				BeanUtils.copyProperties(skillsDto, skillEntity);
@@ -183,7 +188,7 @@ public class AdminServiceImpl implements AdminService {
 	public Boolean deleteMentor(String empId) {
 		Optional<Mentor> optMentor = mentorRepository.findById(empId);
 		if (optMentor.isPresent()) {
-			optMentor.get().setMentorStatus(EmployeeStatus.TERMINATED);
+			optMentor.get().setMentorStatus(Status.INACTIVE);
 			mentorRepository.save(optMentor.get());
 			return true;
 		}
@@ -195,7 +200,8 @@ public class AdminServiceImpl implements AdminService {
 		Optional<Batch> optBatch = batchRepository.findById(batchId);
 		if (optBatch.isPresent()) {
 			Batch batch = optBatch.get();
-			batch.setBatchStatus(BatchStatus.COMPLETED);
+			batch.setStatus(Status.INACTIVE);
+			batchRepository.save(batch);
 			return true;
 		}
 		return false;
@@ -212,6 +218,8 @@ public class AdminServiceImpl implements AdminService {
 			SecondaryInfoDto secondaryInfoDto = new SecondaryInfoDto();
 			BeanUtils.copyProperties(employee.getSecondaryInfo(), secondaryInfoDto);
 			employeeDto.setSecondaryInfoDto(secondaryInfoDto);
+
+			employeeDto.setEmployeeStatus(employee.getEmployeeStatus());
 
 			BankDetailsDto bankDetailsDto = new BankDetailsDto();
 			BeanUtils.copyProperties(employee.getBankDetails(), bankDetailsDto);
@@ -286,10 +294,10 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public Optional<List<NewBatchDto>> getBatchDetails() {
-		List<Batch> batchesFromDb = batchRepository.findAll();
-		if (batchesFromDb != null) {
+		Optional<List<Batch>> batchesFromDb = batchRepository.getBatches();
+		if (batchesFromDb.isPresent()) {
 			List<NewBatchDto> batchDtos = Lists.newArrayList();
-			for (Batch batch : batchesFromDb) {
+			for (Batch batch : batchesFromDb.get()) {
 				NewBatchDto newBatchDto = new NewBatchDto();
 				BeanUtils.copyProperties(batch, newBatchDto);
 				Optional<String> optMentorName = Optional.ofNullable(batch.getMentor().getMentorName());
@@ -311,33 +319,62 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public Optional<MessageDto> ApproveEmployee(String empId, ApproveDto approveDto) {
-		Optional<Employee> employeeFromDb = employeeRepository.findById(empId);
-		if (employeeFromDb.isPresent()) {
-			Optional<Roles> optRoles = rolesRepository.findByRoleName("ROLE_EMPLOYEE");
-			if (optRoles.isPresent()) {
-				AppUser appUser = AppUser.builder().username(empId).password("Welcome123").roles(Lists.newArrayList())
-						.build();
-				appUser.getRoles().add(optRoles.get());
-				Roles role = Roles.builder().roleName("ROLE_EMPLOYEE").appUser(Lists.newArrayList()).build();
-				role.getAppUser().add(appUser);
-				Optional<Batch> batch = batchRepository.findById(approveDto.getBatchId());
-				employeeFromDb.get().setBatch(batch.get());
-				batch.get().getEmployee().add(employeeFromDb.get());
-				employeeFromDb.get().setEmployeeStatus(EmployeeStatus.ACTIVE);
-				employeeRepository.save(employeeFromDb.get());
-				appUserRepository.save(appUser);
-				batchRepository.save(batch.get());
+		Optional<RequestsList> empFromRequestList = requestsRepository.findById(empId);
+		if (empFromRequestList.isPresent()) {
+			Optional<Employee> employeeFromDb = employeeRepository.findById(empId);
+			if (employeeFromDb.isPresent()) {
+				Optional<Roles> optRoles = rolesRepository.findByRoleName("ROLE_EMPLOYEE");
+				if (optRoles.isPresent()) {
+					AppUser appUser = AppUser.builder().username(empId).password("Welcome123")
+							.roles(Lists.newArrayList()).build();
+					appUser.getRoles().add(optRoles.get());
+					Roles role = Roles.builder().roleName("ROLE_EMPLOYEE").appUser(Lists.newArrayList()).build();
+					role.getAppUser().add(appUser);
+					Optional<Batch> batch = batchRepository.findById(approveDto.getBatchId());
+					if (batch.isPresent()) {
+						employeeFromDb.get().setBatch(batch.get());
+						batch.get().getEmployee().add(employeeFromDb.get());
+						employeeFromDb.get().setEmployeeStatus(Status.ACTIVE);
+						employeeRepository.save(employeeFromDb.get());
+						appUserRepository.save(appUser);
+						batchRepository.save(batch.get());
+						requestsRepository.deleteById(empId);
+						String message = "Hello " + employeeFromDb.get().getEmployeeName() + "\n"
+								+ " welcome to the team of techno elevate \n" + "username : " + appUser.getUsername()
+								+ "\n" + " password :" + appUser.getPassword();
+						MessageDto messageDto = MessageDto.builder().message(message)
+								.emaild(employeeFromDb.get().getEmployeeEmailId()).build();
+						return Optional.ofNullable(messageDto);
 
-				String message = "Hello " + employeeFromDb.get().getEmployeeName() + "/n"
-						+ " welcome to the team of techno elevate" + "username : " + appUser.getUsername() + "\n"
-						+ " password :" + appUser.getPassword();
-				MessageDto messageDto = MessageDto.builder().message(message)
-						.emaild(employeeFromDb.get().getEmployeeEmailId()).build();
-				return Optional.ofNullable(messageDto);
+					} else {
+						throw new BatchDetailsNotFoundException("unable to find the batch details");
+					}
+				}
 			}
 		}
 		return Optional.ofNullable(null);
 
+	}
+
+	@Override
+	public Optional<MessageDto> rejectEmployee(String empId, RejectDto rejectDto) {
+		Optional<RequestsList> optEmployee = requestsRepository.findById(empId);
+		if (optEmployee.isPresent()) {
+			Optional<Employee> employeeFromDb = employeeRepository.findById(empId);
+			if (employeeFromDb.isPresent()) {
+				employeeFromDb.get().setEmployeeStatus(Status.INACTIVE);
+				requestsRepository.deleteById(empId);
+				String message = "Hello " + optEmployee.get().getEmployeeName() + "\n"
+						+ "We appreciate your interest and the time you invested in applying for the position. "
+						+ "We regret to inform you that you did not make it to the next round. \n"
+						+ rejectDto.getReason();
+				MessageDto messageDto = MessageDto.builder().message(message)
+						.emaild(employeeFromDb.get().getEmployeeEmailId()).build();
+				return Optional.of(messageDto);
+			}
+
+		}
+		return Optional.ofNullable(null);
 	}
 
 }

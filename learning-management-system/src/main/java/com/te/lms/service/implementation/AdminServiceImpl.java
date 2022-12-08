@@ -177,6 +177,12 @@ public class AdminServiceImpl implements AdminService {
 				technologies1.add(technologies);
 				technologies.getBatch().add(batch);
 			}
+			Optional<Mentor> mentor = mentorRepository.findByMentorName(updateBatchDto.getMentorName());
+			if (mentor.isPresent()) {
+				batch.setMentor(mentor.get());
+				mentor.get().getBatch().add(batch);
+			}
+			
 			batch.setTechnologies(technologies1);
 			batchRepository.save(batch);
 			return true;
