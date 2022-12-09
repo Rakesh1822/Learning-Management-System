@@ -56,7 +56,7 @@ public class AdminController {
 			notify.sendEmail(message, emailId, subject);
 			return new GeneralResponse<String>("mentor has been registered successfully", null);
 		}
-		throw new RegistrationFailedException("Unable to register the mentor");
+		throw new RegistrationFailedException("Unable to register the mentor please check the details and try again");
 	}
 
 	@PostMapping(path = "/register/batch")

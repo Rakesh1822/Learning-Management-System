@@ -3,7 +3,6 @@ package com.te.lms.entity;
 import java.util.List;
 
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -29,7 +28,7 @@ import lombok.Setter;
 @Entity
 public class Mentor {
 
-	@Column(unique = true)
+	@Unique
 	private String mentorName;
 
 	@Id
@@ -37,7 +36,7 @@ public class Mentor {
 
 	private String emailId;
 
-	@OneToMany(mappedBy = "mentor", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy = "mentor",cascade = CascadeType.ALL)
 	private List<Skills> skills = Lists.newArrayList();
 
 	@OneToMany(mappedBy = "mentor")

@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <qualifiedTypeNameHistroy>
-    <fullyQualifiedTypeName name="com.te.lms.enums.BatchStatus"/>
-    <fullyQualifiedTypeName name="com.te.lms.repository.EmployeeRepository"/>
     <fullyQualifiedTypeName name="com.te.lms.dto.EmployeeDto"/>
     <fullyQualifiedTypeName name="com.te.lms.dto.SecondaryInfoDto"/>
     <fullyQualifiedTypeName name="com.te.lms.dto.BankDetailsDto"/>
@@ -47,7 +45,6 @@
     <fullyQualifiedTypeName name="com.te.lms.dto.MessageDto"/>
     <fullyQualifiedTypeName name="com.te.lms.entity.Employee"/>
     <fullyQualifiedTypeName name="com.te.lms.enums.EmployeeStatus"/>
-    <fullyQualifiedTypeName name="java.util.Optional"/>
     <fullyQualifiedTypeName name="com.te.lms.exceptions.EmployeeNotFoundExcpetion"/>
     <fullyQualifiedTypeName name="lombok.NoArgsConstructor"/>
     <fullyQualifiedTypeName name="com.te.lms.exceptions.RegistrationFailedException"/>
@@ -60,4 +57,7 @@
     <fullyQualifiedTypeName name="com.te.lms.exceptions.UnableToDeleteMentor"/>
     <fullyQualifiedTypeName name="javax.persistence.Enumerated"/>
     <fullyQualifiedTypeName name="javax.persistence.EnumType"/>
+    <fullyQualifiedTypeName name="org.checkerframework.common.aliasing.qual.Unique"/>
+    <fullyQualifiedTypeName name="javax.persistence.Column"/>
+    <fullyQualifiedTypeName name="java.util.Optional"/>
 </qualifiedTypeNameHistroy>

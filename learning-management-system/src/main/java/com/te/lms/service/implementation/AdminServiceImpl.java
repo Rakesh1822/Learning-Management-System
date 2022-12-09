@@ -78,6 +78,10 @@ public class AdminServiceImpl implements AdminService {
 		}
 		Optional<Roles> optRole = rolesRepository.findByRoleName("ROLE_MENTOR");
 		if (optRole.isPresent()) {
+			Optional<Mentor> mentorFromDb = mentorRepository.findByMentorName(mentorDto.getMentorName());
+			if(mentorFromDb.isPresent()) {
+				return Optional.ofNullable(null);
+			}
 			AppUser appUser = AppUser.builder().username(mentor.getEmployeeId()).password("Welcome123")
 					.roles(Lists.newArrayList()).build();
 			appUser.getRoles().add(optRole.get());
