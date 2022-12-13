@@ -1,9 +1,6 @@
 package com.te.lms.response;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
-import com.te.lms.entity.RequestsList;
+import java.time.LocalDate;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -13,7 +10,7 @@ import lombok.Setter;
 public class GeneralResponse<T> {
 
 	private String message;
-	private LocalDateTime timeStamp = LocalDateTime.now();
+	private LocalDate timeStamp = LocalDate.now();
     private T data;
 	
 

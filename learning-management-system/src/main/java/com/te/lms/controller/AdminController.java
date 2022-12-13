@@ -3,6 +3,7 @@ package com.te.lms.controller;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.te.lms.communication.Notify;
@@ -54,11 +56,13 @@ public class AdminController {
 			String subject = "Congratulations";
 			String emailId = optMessage.get().getEmaild();
 			notify.sendEmail(message, emailId, subject);
-			return new GeneralResponse<String>("mentor has been registered successfully", null);
+			return new GeneralResponse<String>("mentor has been registered successfully", mentorDto.getEmployeeId());
 		}
 		throw new RegistrationFailedException("Unable to register the mentor please check the details and try again");
 	}
 
+	// request handler Method for creating a new Batch.........
+	@ResponseStatus(HttpStatus.OK)
 	@PostMapping(path = "/register/batch")
 	public GeneralResponse<String> createBatch(@RequestBody NewBatchDto newBatchDto) {
 		Optional<String> optBacthId = adminService.createBatch(newBatchDto);
@@ -77,7 +81,7 @@ public class AdminController {
 		}
 		throw new NoDataFoundInTheListException("List is Empty");
 
-	}
+	} 
 
 	@PutMapping(path = "/mentor/update/{empId}")
 	public GeneralResponse<String> updateMentor(@PathVariable(name = "empId") String empId,

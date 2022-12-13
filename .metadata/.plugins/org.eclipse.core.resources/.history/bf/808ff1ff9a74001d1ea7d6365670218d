@@ -1,7 +1,0 @@
-package com.te.lms.enums;
-
-public enum BatchStatus {
-
-	INPROGRESS("IN-PROGRESS"), COMPLETED("COMPLETED"), TO-BE-STARTED("TO-BE-STARTED");
-	
-}
