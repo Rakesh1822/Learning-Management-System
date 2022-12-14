@@ -16,15 +16,24 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
+import com.te.lms.dto.ApproveDto;
 import com.te.lms.dto.MentorDto;
 import com.te.lms.dto.MessageDto;
+import com.te.lms.dto.NewBatchDto;
+import com.te.lms.dto.RejectDto;
+import com.te.lms.dto.RequestsListsDto;
 import com.te.lms.dto.SkillsDto;
+import com.te.lms.dto.TechnologiesDto;
+import com.te.lms.dto.UpdateBatchDto;
 import com.te.lms.dto.UpdateMentorDto;
+import com.te.lms.enums.BatchStatus;
+import com.te.lms.exceptions.EmployeeNotFoundExcpetion;
 import com.te.lms.response.GeneralResponse;
 import com.te.lms.service.AdminService;
 
@@ -171,4 +180,179 @@ public class TestAdminController {
 
 	}
 
+	@Test
+	public void testRegisterBatch() throws JsonProcessingException, UnsupportedEncodingException, Exception {
+		NewBatchDto newBatchDto = NewBatchDto.builder().batchId("BATCH-01").batchName("SEP-21")
+				.batchStatus(BatchStatus.INPROGRESS).technologiesDto(Lists.newArrayList()).build();
+		TechnologiesDto technologiesDto = new TechnologiesDto();
+		technologiesDto.setTechnologyName("JAVA");
+		newBatchDto.getTechnologiesDto().add(technologiesDto);
+
+		Mockito.when(adminService.createBatch(Mockito.any())).thenReturn(Optional.ofNullable(newBatchDto.getBatchId()));
+
+		String contentAsString = mockMvc
+				.perform(MockMvcRequestBuilders.post("/admin/register/batch").accept(MediaType.APPLICATION_JSON_VALUE)
+						.content(objectMapper.writeValueAsString(newBatchDto))
+						.contentType(MediaType.APPLICATION_JSON_VALUE))
+				.andExpect(MockMvcResultMatchers.status().isOk()).andReturn().getResponse().getContentAsString();
+		GeneralResponse<String> readValue = objectMapper.readValue(contentAsString, GeneralResponse.class);
+		assertEquals("BATCH-01", readValue.getData());
+	}
+
+	@Test
+	public void testRegisterBatch_Returns400() throws Exception {
+
+		NewBatchDto newBatchDto = new NewBatchDto();
+		Mockito.when(adminService.createBatch(Mockito.any())).thenReturn(Optional.ofNullable(newBatchDto.getBatchId()));
+		mockMvc.perform(MockMvcRequestBuilders.post("/admin/register/batch").accept(MediaType.APPLICATION_JSON_VALUE)
+				.content(objectMapper.writeValueAsString(newBatchDto)).contentType(MediaType.APPLICATION_JSON_VALUE))
+				.andExpect(MockMvcResultMatchers.status().isBadRequest());
+	}
+
+	@Test
+	public void testGetEmployee() throws UnsupportedEncodingException, Exception {
+		MentorDto mentorDto = MentorDto.builder().emailId("a@a.com").employeeId("TY001").mentorName("Rakesh reddy")
+				.skillsDto(Lists.newArrayList()).build();
+		List<SkillsDto> skills = Lists.newArrayList();
+		SkillsDto skillDto = new SkillsDto();
+		skillDto.setSkillName("skill-1");
+		skills.add(skillDto);
+		mentorDto.setSkillsDto(skills);
+
+		Mockito.when(adminService.getEmployee(Mockito.any())).thenReturn(Optional.ofNullable(mentorDto));
+
+		String contentAsString = mockMvc
+				.perform(MockMvcRequestBuilders.get("/admin/search/{employeeId}", "TY001")
+						.accept(MediaType.APPLICATION_JSON_VALUE).contentType(MediaType.APPLICATION_JSON_VALUE))
+				.andExpect(MockMvcResultMatchers.status().isOk()).andReturn().getResponse().getContentAsString();
+		GeneralResponse<String> readValue = objectMapper.readValue(contentAsString, GeneralResponse.class);
+		assertEquals("Employee Details", readValue.getMessage());
+	}
+
+	@Test
+	public void testGetEmployee_Returns400() throws Exception {
+		MentorDto mentorDto = new MentorDto();
+
+		Mockito.when(adminService.getEmployee(Mockito.any())).thenReturn(Optional.ofNullable(null));
+
+		mockMvc.perform(MockMvcRequestBuilders.get("/admin/search/{employeeId}", "TY001")
+				.accept(MediaType.APPLICATION_JSON_VALUE).contentType(MediaType.APPLICATION_JSON_VALUE))
+				.andExpect(MockMvcResultMatchers.status().isBadRequest());
+	}
+
+	@Test
+	public void testGetRequestList() throws UnsupportedEncodingException, Exception {
+
+		List<RequestsListsDto> requestList = Lists.newArrayList();
+		RequestsListsDto requestsListsDto = new RequestsListsDto();
+		RequestsListsDto requestListsDto2 = new RequestsListsDto();
+		requestList.add(requestListsDto2);
+		requestList.add(requestsListsDto);
+
+		Mockito.when(adminService.getRequestList()).thenReturn(Optional.ofNullable(requestList));
+		mockMvc.perform(MockMvcRequestBuilders.get("/admin/requestlist").accept(MediaType.APPLICATION_JSON_VALUE)
+				.contentType(MediaType.APPLICATION_JSON_VALUE)).andExpect(MockMvcResultMatchers.status().isOk())
+				.andDo(MockMvcResultHandlers.print());
+
+	}
+
+	@Test
+	public void testUpdateBatch() throws UnsupportedEncodingException, Exception {
+
+		UpdateBatchDto updateBatchDto = UpdateBatchDto.builder().batchName("ABC").batchStatus(BatchStatus.INPROGRESS)
+				.mentorName("Rakesh").technologiesDto(Lists.newArrayList()).build();
+
+		Mockito.when(adminService.updateBatch(Mockito.any(), Mockito.any())).thenReturn(true);
+
+		String contentAsString = mockMvc
+				.perform(MockMvcRequestBuilders.put("/admin/batch/update/{batchId}", "TY001")
+						.accept(MediaType.APPLICATION_JSON_VALUE)
+						.content(objectMapper.writeValueAsString(updateBatchDto))
+						.contentType(MediaType.APPLICATION_JSON_VALUE))
+				.andExpect(MockMvcResultMatchers.status().isOk()).andReturn().getResponse().getContentAsString();
+		GeneralResponse<String> readValue = objectMapper.readValue(contentAsString, GeneralResponse.class);
+		assertEquals("TY001", readValue.getData());
+
+	}
+
+	@Test
+	public void testUpdateBatch_Returns400() throws UnsupportedEncodingException, Exception {
+
+		UpdateBatchDto updateBatchDto = UpdateBatchDto.builder().batchName("ABC").batchStatus(BatchStatus.INPROGRESS)
+				.mentorName("Rakesh").technologiesDto(Lists.newArrayList()).build();
+
+		Mockito.when(adminService.updateBatch(Mockito.any(), Mockito.any())).thenReturn(false);
+
+		mockMvc.perform(MockMvcRequestBuilders.put("/admin/batch/update/{batchId}", "TY001")
+				.accept(MediaType.APPLICATION_JSON_VALUE).content(objectMapper.writeValueAsString(updateBatchDto))
+				.contentType(MediaType.APPLICATION_JSON_VALUE))
+				.andExpect(MockMvcResultMatchers.status().isBadRequest());
+
+	}
+
+	@Test
+	public void testApproveRequest() throws JsonProcessingException, UnsupportedEncodingException, Exception {
+		ApproveDto approveDto = ApproveDto.builder().batchId("TY001").batchName("SEP-21").build();
+
+		MessageDto messageDto = MessageDto.builder().emaild("a@a.com").message("This message").build();
+
+		Mockito.when(adminService.ApproveEmployee(Mockito.any(), Mockito.any()))
+				.thenReturn(Optional.ofNullable(messageDto));
+
+		String contentAsString = mockMvc
+				.perform(MockMvcRequestBuilders.post("/admin/requestlist/approve/{employeeId}", "TY001")
+						.accept(MediaType.APPLICATION_JSON_VALUE).content(objectMapper.writeValueAsString(approveDto))
+						.contentType(MediaType.APPLICATION_JSON_VALUE))
+				.andExpect(MockMvcResultMatchers.status().isOk()).andReturn().getResponse().getContentAsString();
+		GeneralResponse<String> readValue = objectMapper.readValue(contentAsString, GeneralResponse.class);
+		assertEquals("employee has been approved", readValue.getMessage());
+
+	}
+
+	@Test
+	public void testApproveRequest_Returns400() throws JsonProcessingException, Exception {
+		ApproveDto approveDto = ApproveDto.builder().batchId("TY001").batchName("SEP-21").build();
+
+		Mockito.when(adminService.ApproveEmployee(Mockito.any(), Mockito.any())).thenReturn(Optional.ofNullable(null));
+
+		mockMvc.perform(MockMvcRequestBuilders.post("/admin/requestlist/approve/{employeeId}", "TY001")
+				.accept(MediaType.APPLICATION_JSON_VALUE).content(objectMapper.writeValueAsString(approveDto))
+				.contentType(MediaType.APPLICATION_JSON_VALUE))
+				.andExpect(MockMvcResultMatchers.status().isBadRequest());
+
+	}
+
+	@Test
+	public void testRejectRequest() throws JsonProcessingException, UnsupportedEncodingException, Exception {
+		RejectDto rejectDto = RejectDto.builder().reason("Need to imporve").build();
+		MessageDto messageDto = MessageDto.builder().emaild("a@a.com").message("Need to imporve").build();
+		Mockito.when(adminService.rejectEmployee(Mockito.any(), Mockito.any()))
+				.thenReturn(Optional.ofNullable(messageDto));
+
+		String contentAsString = mockMvc
+				.perform(MockMvcRequestBuilders.put("/admin/requestlist/reject/{empId}", "TY001")
+						.accept(MediaType.APPLICATION_JSON_VALUE).content(objectMapper.writeValueAsString(rejectDto))
+						.contentType(MediaType.APPLICATION_JSON_VALUE))
+				.andExpect(MockMvcResultMatchers.status().isOk()).andReturn().getResponse().getContentAsString();
+		GeneralResponse<String> readValue = objectMapper.readValue(contentAsString, GeneralResponse.class);
+		assertEquals("employee has been  rejected succesfully", readValue.getMessage());
+
+	}
+
+	@Test
+	public void testRejectRequest_Returns400() throws JsonProcessingException, UnsupportedEncodingException, Exception {
+		RejectDto rejectDto = RejectDto.builder().reason("Need to imporve").build();
+		MessageDto messageDto = MessageDto.builder().emaild("a@a.com").message("Need to imporve").build();
+		Mockito.when(adminService.rejectEmployee(Mockito.any(), Mockito.any())).thenReturn(Optional.ofNullable(null));
+
+		String contentAsSting = mockMvc
+				.perform(MockMvcRequestBuilders.put("/admin/requestlist/reject/{empId}", "TY001")
+						.accept(MediaType.APPLICATION_JSON_VALUE).content(objectMapper.writeValueAsString(rejectDto))
+						.contentType(MediaType.APPLICATION_JSON_VALUE))
+				.andExpect(MockMvcResultMatchers.status().isBadRequest()).andReturn().getResponse()
+				.getContentAsString();
+		EmployeeNotFoundExcpetion exception = objectMapper.readValue(contentAsSting, EmployeeNotFoundExcpetion.class);
+		assertEquals("unable to find the employee", exception.getMessage());
+
+	}
 }

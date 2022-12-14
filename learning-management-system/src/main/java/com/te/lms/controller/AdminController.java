@@ -48,7 +48,7 @@ public class AdminController {
 	private final Notify notify;
 
 	@PostMapping(path = "/register/mentor")
-	public GeneralResponse<String> registerMentor(@RequestBody MentorDto mentorDto) {
+	public GeneralResponse<String> registerMentor(@RequestBody MentorDto mentorDto) { // test cases written
 
 		Optional<MessageDto> optMessage = adminService.registerMentor(mentorDto);
 		if (optMessage.isPresent()) {
@@ -64,7 +64,7 @@ public class AdminController {
 	// request handler Method for creating a new Batch.........
 	@ResponseStatus(HttpStatus.OK)
 	@PostMapping(path = "/register/batch")
-	public GeneralResponse<String> createBatch(@RequestBody NewBatchDto newBatchDto) {
+	public GeneralResponse<String> createBatch(@RequestBody NewBatchDto newBatchDto) { // test cases written
 		Optional<String> optBacthId = adminService.createBatch(newBatchDto);
 		if (optBacthId.isPresent()) {
 			return new GeneralResponse<String>("a Batch has been created", optBacthId.get());
@@ -74,18 +74,18 @@ public class AdminController {
 	}
 
 	@GetMapping(path = "/requestlist")
-	public ResponseEntity<List<RequestsListsDto>> getRequestList() {
+	public ResponseEntity<List<RequestsListsDto>> getRequestList() { // test cases written
 		Optional<List<RequestsListsDto>> optEmployees = adminService.getRequestList();
 		if (optEmployees.isPresent()) {
 			return ResponseEntity.ok(optEmployees.get());
 		}
 		throw new NoDataFoundInTheListException("List is Empty");
 
-	} 
+	}
 
 	@PutMapping(path = "/mentor/update/{empId}")
 	public GeneralResponse<String> updateMentor(@PathVariable(name = "empId") String empId,
-			@RequestBody UpdateMentorDto updateMentorDto) {
+			@RequestBody UpdateMentorDto updateMentorDto) { // test cases written
 		Boolean isUpdated = adminService.updateMentor(empId, updateMentorDto);
 		if (isUpdated) {
 			return new GeneralResponse<String>("mentor has been updated", updateMentorDto.getMentorName());
@@ -94,7 +94,7 @@ public class AdminController {
 	}
 
 	@PutMapping(path = "/mentor/delete/{empId}")
-	public GeneralResponse<String> deleteMentor(@PathVariable(name = "empId") String empId) {
+	public GeneralResponse<String> deleteMentor(@PathVariable(name = "empId") String empId) {// test cases written
 		Boolean isRemoved = adminService.deleteMentor(empId);
 		if (isRemoved) {
 			return new GeneralResponse<String>("Mentor has been removed", empId);
@@ -103,7 +103,7 @@ public class AdminController {
 	}
 
 	@PutMapping(path = "/batch/delete/{batchId}")
-	public GeneralResponse<String> deleteBatch(@PathVariable(name = "batchId") String batchId) {
+	public GeneralResponse<String> deleteBatch(@PathVariable(name = "batchId") String batchId) {// test cases written
 		Boolean isRemoved = adminService.deleteBatch(batchId);
 		if (isRemoved) {
 			return new GeneralResponse<String>("batch has been deleted successfully", batchId);
@@ -112,7 +112,7 @@ public class AdminController {
 	}
 
 	@PutMapping(path = "/batch/update/{batchId}")
-	public GeneralResponse<String> updateBatch(@PathVariable(name = "batchId") String batchId,
+	public GeneralResponse<String> updateBatch(@PathVariable(name = "batchId") String batchId, // test cases written
 			@RequestBody UpdateBatchDto updateBatchDto) {
 		Boolean isUpdated = adminService.updateBatch(batchId, updateBatchDto);
 		if (isUpdated) {
@@ -123,7 +123,7 @@ public class AdminController {
 	}
 
 	@GetMapping(path = "/search/{employeeId}")
-	public GeneralResponse<Object> getEmployee(@PathVariable("employeeId") String employeeId) {
+	public GeneralResponse<Object> getEmployee(@PathVariable("employeeId") String employeeId) { // test cases written
 		Optional<Object> optdata = adminService.getEmployee(employeeId);
 		if (optdata.isPresent()) {
 			return new GeneralResponse<Object>("Employee Details", optdata.get());
@@ -150,7 +150,7 @@ public class AdminController {
 	}
 
 	@PostMapping(path = "/requestlist/approve/{empId}")
-	public GeneralResponse<String> approveRequest(@PathVariable(name = "empId") String empId,
+	public GeneralResponse<String> approveRequest(@PathVariable(name = "empId") String empId, // test cases written
 			@RequestBody ApproveDto approveDto) {
 		Optional<MessageDto> optMessage = adminService.ApproveEmployee(empId, approveDto);
 		if (optMessage.isPresent()) {
@@ -163,7 +163,7 @@ public class AdminController {
 		throw new EmployeeCannotBeApprovedException("employee cannot be approved");
 	}
 
-	@PutMapping(path = "/requestlist/reject/{empId}")
+	@PutMapping(path = "/requestlist/reject/{empId}")                                            // test cases written
 	public GeneralResponse<String> rejectRequest(@PathVariable(name = "empId") String empId,
 			@RequestBody RejectDto rejectDto) {
 		Optional<MessageDto> optMessage = adminService.rejectEmployee(empId, rejectDto);

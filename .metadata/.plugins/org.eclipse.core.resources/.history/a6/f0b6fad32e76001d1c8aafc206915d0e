@@ -1,8 +1,0 @@
-package com.te.lms.exceptions;
-
-public class BatchDetailsNotUpdatedException extends RuntimeException {
-
-	public BatchDetailsNotUpdatedException(String message) {
-		super(message);
-	}
-}
