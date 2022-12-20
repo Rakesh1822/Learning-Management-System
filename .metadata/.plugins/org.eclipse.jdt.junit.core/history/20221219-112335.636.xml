@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?><testrun name="TestAdminServiceImpl" project="learning-management-system" tests="3" started="3" failures="0" errors="0" ignored="0">
-  <testsuite name="com.te.lms.service.TestAdminServiceImpl" time="0.063" displayname="TestAdminServiceImpl" uniqueid="[engine:junit-jupiter]/[class:com.te.lms.service.TestAdminServiceImpl]">
-    <testcase name="testRegisterMentor" classname="com.te.lms.service.TestAdminServiceImpl" time="0.042" displayname="testRegisterMentor()" uniqueid="[engine:junit-jupiter]/[class:com.te.lms.service.TestAdminServiceImpl]/[method:testRegisterMentor()]"/>
-    <testcase name="TestDeleteMentor_ReturnsFalse" classname="com.te.lms.service.TestAdminServiceImpl" time="0.01" displayname="TestDeleteMentor_ReturnsFalse()" uniqueid="[engine:junit-jupiter]/[class:com.te.lms.service.TestAdminServiceImpl]/[method:TestDeleteMentor_ReturnsFalse()]"/>
-    <testcase name="TestDeleteMentor_ReturnsTrue" classname="com.te.lms.service.TestAdminServiceImpl" time="0.01" displayname="TestDeleteMentor_ReturnsTrue()" uniqueid="[engine:junit-jupiter]/[class:com.te.lms.service.TestAdminServiceImpl]/[method:TestDeleteMentor_ReturnsTrue()]"/>
-  </testsuite>
-</testrun>

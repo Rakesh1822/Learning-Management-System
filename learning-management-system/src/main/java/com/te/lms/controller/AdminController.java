@@ -76,7 +76,7 @@ public class AdminController {
 	@GetMapping(path = "/requestlist")
 	public ResponseEntity<List<RequestsListsDto>> getRequestList() { // test cases written
 		Optional<List<RequestsListsDto>> optEmployees = adminService.getRequestList();
-		if (optEmployees.isPresent()) {
+		if (optEmployees.get().size()>=1) {
 			return ResponseEntity.ok(optEmployees.get());
 		}
 		throw new NoDataFoundInTheListException("List is Empty");
@@ -134,7 +134,7 @@ public class AdminController {
 	@GetMapping(path = "/mentors")
 	public ResponseEntity<List<MentorDto>> getMentors() {
 		Optional<List<MentorDto>> mentorsFromDb = adminService.getMentors();
-		if (mentorsFromDb.isPresent()) {
+		if (mentorsFromDb.get().size()>=1) {
 			return ResponseEntity.ok(mentorsFromDb.get());
 		}
 		throw new NoMentorsFoundException("no mentors found");
@@ -142,7 +142,7 @@ public class AdminController {
 	@GetMapping(path = "/batches")
 	public ResponseEntity<List<NewBatchDto>> getBatch() {
 		Optional<List<NewBatchDto>> batchesFromDb = adminService.getBatchDetails();
-		if (batchesFromDb.isPresent()) {
+		if (batchesFromDb.get().size()>=1) {
 			return ResponseEntity.ok(batchesFromDb.get());
 		}
 		throw new BatchesNotFoundException("No batches Found");

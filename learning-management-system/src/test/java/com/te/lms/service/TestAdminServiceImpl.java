@@ -22,6 +22,7 @@ import com.te.lms.dto.EmployeeDto;
 import com.te.lms.dto.MentorDto;
 import com.te.lms.dto.MessageDto;
 import com.te.lms.dto.NewBatchDto;
+import com.te.lms.dto.RejectDto;
 import com.te.lms.dto.RequestsListsDto;
 import com.te.lms.dto.SkillsDto;
 import com.te.lms.dto.TechnologiesDto;
@@ -113,7 +114,7 @@ class TestAdminServiceImpl {
 	}
 
 	@Test
-	public void testRegisterMentor() {
+	public void testRegisterMentor_ReturnsMessageDto() {
 
 		MentorDto mentorDto = MentorDto.builder().employeeId("TY001").emailId("mentor@gmail.com")
 				.skillsDto(List.of(SkillsDto.builder().skillName("java").build())).mentorName("Rakesh").build();
@@ -133,6 +134,14 @@ class TestAdminServiceImpl {
 		Optional<MessageDto> messageDto2 = adminService.registerMentor(mentorDto);
 		assertEquals(messageDto2.get().getEmaild(), mentor.getEmailId());
 
+	}
+	
+	@Test
+	public void testRegisterMentor_ReturnsNull() {
+		MentorDto mentorDto = MentorDto.builder().employeeId("TY001").emailId("mentor@gmail.com")
+				.skillsDto(List.of(SkillsDto.builder().skillName("java").build())).mentorName("Rakesh").build();
+         Mockito.when(rolesRepository.findByRoleName(Mockito.any())).thenReturn(Optional.ofNullable(null));
+         assertEquals(adminService.registerMentor(mentorDto),Optional.ofNullable(null));
 	}
 
 	@Test
@@ -189,23 +198,23 @@ class TestAdminServiceImpl {
 		Mockito.when(batchRepository.save(Mockito.any())).thenReturn(batch);
 		assertEquals(adminService.createBatch(batchdto), Optional.ofNullable(batch.getBatchId()));
 	}
-	
+
 	@Test
 	public void testCreateBatch_RetursNull() {
-		
-			NewBatchDto batchdto = NewBatchDto.builder().batchId("Batch-01").batchName("batch01")
-					.batchStatus(BatchStatus.TOBESTARTED).startDate(LocalDate.of(2022, 02, 10))
-					.endDate(LocalDate.of(2022, 04, 10))
-					.technologiesDto(List.of(TechnologiesDto.builder().technologyName("java").build())).build();
-			Batch batch = Batch.builder().batchId("Batch-01").batchName("batch01").batchStatus(BatchStatus.TOBESTARTED)
-					.startDate(LocalDate.of(2022, 02, 10)).endDate(LocalDate.of(2022, 04, 10))
-					.employee(Lists.newArrayList()).build();
-			Mockito.when(batchRepository.findById(Mockito.any())).thenReturn(Optional.ofNullable(batch));
-			assertEquals(adminService.createBatch(batchdto), Optional.ofNullable(null));
+
+		NewBatchDto batchdto = NewBatchDto.builder().batchId("Batch-01").batchName("batch01")
+				.batchStatus(BatchStatus.TOBESTARTED).startDate(LocalDate.of(2022, 02, 10))
+				.endDate(LocalDate.of(2022, 04, 10))
+				.technologiesDto(List.of(TechnologiesDto.builder().technologyName("java").build())).build();
+		Batch batch = Batch.builder().batchId("Batch-01").batchName("batch01").batchStatus(BatchStatus.TOBESTARTED)
+				.startDate(LocalDate.of(2022, 02, 10)).endDate(LocalDate.of(2022, 04, 10))
+				.employee(Lists.newArrayList()).build();
+		Mockito.when(batchRepository.findById(Mockito.any())).thenReturn(Optional.ofNullable(batch));
+		assertEquals(adminService.createBatch(batchdto), Optional.ofNullable(null));
 	}
-	
+
 	@Test
-	public void testGetRequestList() {
+	public void testGetRequestList_ReturnsRequestList() {
 		List<RequestsList> requestsList = Lists.newArrayList();
 		RequestsList requestsList2 = RequestsList.builder().contactNumber(8464651844L).employeeExperience(2)
 				.employeeId("TY001").employeeName("Rakesh Reddy").employeePercentage(84.9).employeeYOP(2019).build();
@@ -226,7 +235,7 @@ class TestAdminServiceImpl {
 		Boolean isUpdated = adminService.updateMentor("TY001", updateMentorDto);
 		assertTrue(isUpdated);
 	}
-	
+
 	@Test
 	public void updateMentor_ReturnsFalse() {
 		UpdateMentorDto updateMentorDto = UpdateMentorDto.builder().emailId("rakesh@gmail.com").mentorName("Rakesh")
@@ -255,7 +264,7 @@ class TestAdminServiceImpl {
 		Boolean isUpdated = adminService.updateBatch("batch01", updateBatchdto);
 		assertTrue(isUpdated);
 	}
-	
+
 	@Test
 	public void updateBatch_ReturnsFalse() {
 		UpdateBatchDto updateBatchdto = UpdateBatchDto.builder().batchName("batch01")
@@ -311,9 +320,15 @@ class TestAdminServiceImpl {
 		assertEquals(mentorDto.getEmployeeId(), mentor.getEmployeeId());
 		assertEquals(mentorDto.getEmailId(), mentor.getEmailId());
 	}
+	@Test
+	public void testGetEmployee_ReturnsNull() {
+        Mockito.when(employeeRepository.findById(Mockito.any())).thenReturn(Optional.ofNullable(null));
+		Mockito.when(mentorRepository.findById(Mockito.any())).thenReturn(Optional.ofNullable(null));
+		assertEquals(adminService.getEmployee("TY002"),Optional.ofNullable(null));
+	}
 
 	@Test
-	public void testGetMentors() {
+	public void testGetMentors_ReturnsMentors() {
 		List<Mentor> mentors = Lists.newArrayList();
 		Mentor mentor = Mentor.builder().employeeId("TY002").emailId("mentor@gmail.com")
 				.skills(List.of(Skills.builder().skillName("java").build())).mentorName("Rakesh").build();
@@ -324,7 +339,7 @@ class TestAdminServiceImpl {
 	}
 
 	@Test
-	public void testGetBatchDetails() {
+	public void testGetBatchDetails_ReturnsBatches() {
 		List<Batch> batches = Lists.newArrayList();
 		Batch batch = Batch.builder().batchId("Batch-01").batchName("batch01").batchStatus(BatchStatus.TOBESTARTED)
 				.startDate(LocalDate.of(2022, 02, 10)).endDate(LocalDate.of(2022, 04, 10)).mentor(null).build();
@@ -339,7 +354,7 @@ class TestAdminServiceImpl {
 
 	}
 
-	@Disabled
+
 	@Test
 	public void testApproveEmployee_ReturnsMessageDto() {
 		ApproveDto approveDto = ApproveDto.builder().batchId("batch01").batchName("batch-01").build();
@@ -362,7 +377,7 @@ class TestAdminServiceImpl {
 						List.of(TechnicalSkills.builder().skillType("java").skillRating(SkillRating.BEGINNER).build()))
 				.build();
 		Batch batch = Batch.builder().batchId("Batch-01").batchName("batch01").batchStatus(BatchStatus.TOBESTARTED)
-				.startDate(LocalDate.of(2022, 02, 10)).endDate(LocalDate.of(2022, 04, 10)).mentor(null).build();
+				.startDate(LocalDate.of(2022, 02, 10)).endDate(LocalDate.of(2022, 04, 10)).mentor(null).employee(Lists.newArrayList()).build();
 		List<Technologies> technologies = Lists.newArrayList();
 		Technologies technologies2 = Technologies.builder().technologyId(1).technologyName("Java").build();
 		technologies.add(technologies2);
@@ -384,9 +399,52 @@ class TestAdminServiceImpl {
 		Optional<MessageDto> approveEmployee = adminService.ApproveEmployee(employee.getEmployeeId(), approveDto);
 		assertEquals(messageDto.getEmaild(), approveEmployee.get().getEmaild());
 	}
+	
+	@Test
+	public void testApproveEmployee_ReturnsNull() {
+		ApproveDto approveDto = ApproveDto.builder().batchId("batch01").batchName("batch-01").build();
+		Mockito.when(requestsRepository.findById(Mockito.any())).thenReturn(Optional.ofNullable(null));
+		assertEquals(adminService.ApproveEmployee("TY002", approveDto),Optional.ofNullable(null));
+	}
 
 	@Test
-	public void testRejectEmployee() {
+	public void testRejectEmployee_ReturnsMessageDto() {
 
+		RequestsList requests = new RequestsList();
+		RejectDto rejectDto = RejectDto.builder().reason("not eligible for the selection process").build();
+		Employee employee = Employee.builder().employeeId("TY001").employeeName("Rakesh")
+				.employeeEmailId("rakesh.s@gmail.com").addressDetails(Lists.newArrayList())
+				.bankDetails(BankDetails.builder().accountNo("68464651").accountType(AccountType.SAVINGS)
+						.bankName("XIS").build())
+				.bloodGroup("AB+")
+				.contact(List.of(Contact.builder().contactNumber(65466168181L).contactType(ContactType.HOME).build()))
+				.educationDetails(List.of(EducationDetails.builder().educationType(EducationType.UG).build()))
+				.employeeDesignation("Employee").employeeDOB(LocalDate.of(2001, 04, 8)).employeeGender(Gender.MALE)
+				.employeeNationality("INDIAN").employeeStatus(Status.ACTIVE)
+				.experience(List
+						.of(Experience.builder().companyName("ABC").dateOfJoining(LocalDate.of(2012, 01, 10)).build()))
+				.secondaryInfo(SecondaryInfo.builder().aadharNo("65156151515").panNo("541516511ACASV")
+						.fatherName("father").motherName("mother").maritalStatus(MaritalStatus.UNMARRIED).build())
+				.technicalSkills(
+						List.of(TechnicalSkills.builder().skillType("java").skillRating(SkillRating.BEGINNER).build()))
+				.build();
+		String message = "Hello " + employee.getEmployeeName() + "\n"
+				+ "We appreciate your interest and the time you invested in applying for the position. "
+				+ "We regret to inform you that you did not make it to the next round. \n"
+				+ rejectDto.getReason();
+		MessageDto messageDto2 = MessageDto.builder().message(message)
+				.emaild(employee.getEmployeeEmailId()).build();
+		Mockito.when(requestsRepository.findById(Mockito.any())).thenReturn(Optional.ofNullable(requests));
+		Mockito.when(employeeRepository.findById(Mockito.any())).thenReturn(Optional.ofNullable(employee));
+		Optional<MessageDto> messageDto  = adminService.rejectEmployee("TY001", rejectDto);
+		assertEquals(messageDto2.getEmaild(), messageDto.get().getEmaild());	
+	}
+	@Test
+	public void testRejectEmployee_ReturnsNull() {
+		RequestsList requests = new RequestsList();
+		RejectDto rejectDto = RejectDto.builder().reason("not eligible for the selection process").build();
+		Mockito.when(requestsRepository.findById(Mockito.any())).thenReturn(Optional.ofNullable(null));
+	    adminService.rejectEmployee("TY001", rejectDto);
+		assertEquals(adminService.rejectEmployee("TY001", rejectDto),Optional.ofNullable(null));
 	}
 }

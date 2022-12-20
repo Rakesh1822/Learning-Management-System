@@ -31,7 +31,7 @@ public class LmsExceptionHandler {
 		map.put("message", ex.getMessage());
 		return map;
 	}
-
+ 
 	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(UnableToDeleteBatchException.class)
 	public Map<String, String> handler(UnableToDeleteBatchException ex) {

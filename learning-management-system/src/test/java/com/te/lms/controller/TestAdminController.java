@@ -38,6 +38,7 @@ import com.te.lms.exceptions.BatchDetailsNotUpdatedException;
 import com.te.lms.exceptions.BatchesNotFoundException;
 import com.te.lms.exceptions.EmployeeCannotBeApprovedException;
 import com.te.lms.exceptions.EmployeeNotFoundException;
+import com.te.lms.exceptions.NoDataFoundInTheListException;
 import com.te.lms.exceptions.NoMentorsFoundException;
 import com.te.lms.exceptions.RegistrationFailedException;
 import com.te.lms.exceptions.UnableToDeleteBatchException;
@@ -296,6 +297,19 @@ public class TestAdminController {
 	}
 
 	@Test
+	public void testGetRequestList_Returns400() throws Exception {
+		List<RequestsListsDto> requestList = Lists.newArrayList();
+		Mockito.when(adminService.getRequestList()).thenReturn(Optional.ofNullable(requestList));
+		String contentAsString = mockMvc
+				.perform(MockMvcRequestBuilders.get("/admin/requestlist").accept(MediaType.APPLICATION_JSON_VALUE)
+						.contentType(MediaType.APPLICATION_JSON_VALUE))
+				.andExpect(MockMvcResultMatchers.status().isBadRequest()).andReturn().getResponse().getContentAsString();
+		NoDataFoundInTheListException readValue = objectMapper.readValue(contentAsString,
+				NoDataFoundInTheListException.class);
+		assertEquals("List is Empty", readValue.getMessage());
+	}
+
+	@Test
 	public void testUpdateBatch() throws UnsupportedEncodingException, Exception {
 		UpdateBatchDto updateBatchDto = UpdateBatchDto.builder().batchName("ABC").batchStatus(BatchStatus.INPROGRESS)
 				.mentorName("Rakesh").technologiesDto(Lists.newArrayList()).build();
@@ -436,12 +450,13 @@ public class TestAdminController {
 
 	@Test
 	public void testGetBatch_Returns400() throws Exception {
-		Mockito.when(adminService.getBatchDetails()).thenReturn(Optional.ofNullable(null));
+		List<NewBatchDto> batchDtoList = Lists.newArrayList();
+		Mockito.when(adminService.getBatchDetails()).thenReturn(Optional.ofNullable(batchDtoList));
 		String contentAsString = mockMvc
 				.perform(MockMvcRequestBuilders.get("/admin/batches").contentType(MediaType.APPLICATION_JSON))
 				.andExpect(MockMvcResultMatchers.status().isBadRequest()).andReturn().getResponse()
 				.getContentAsString();
 		BatchesNotFoundException readValue = objectMapper.readValue(contentAsString, BatchesNotFoundException.class);
-		assertEquals("No batches Found", readValue.getMessage()); 
+		assertEquals("No batches Found", readValue.getMessage());
 	}
 }
