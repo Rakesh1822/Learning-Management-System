@@ -25,7 +25,6 @@ public class EmployeeController {
 	@PutMapping(path = "/employee/update/{empId}")
 	public GeneralResponse<String> update(@RequestBody UpdateDto updateDto,
 			@PathVariable String empId) {
-
 		Boolean isUpdated = employeeService.update(empId, updateDto);
 		if (isUpdated) {
 			return new GeneralResponse<String>("emplpoyeeDetails has been updated succesfully", empId);

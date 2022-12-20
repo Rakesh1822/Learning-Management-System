@@ -79,7 +79,7 @@ public class AdminServiceImpl implements AdminService {
 		Optional<Roles> optRole = rolesRepository.findByRoleName("ROLE_MENTOR");
 		if (optRole.isPresent()) {
 			Optional<Mentor> mentorFromDb = mentorRepository.findByMentorName(mentorDto.getMentorName());
-			if(mentorFromDb.isPresent()) {
+			if (mentorFromDb.isPresent()) {
 				return Optional.ofNullable(null);
 			}
 			AppUser appUser = AppUser.builder().username(mentor.getEmployeeId()).password("Welcome123")
@@ -100,6 +100,10 @@ public class AdminServiceImpl implements AdminService {
 
 	@Override
 	public Optional<String> createBatch(NewBatchDto newBatchDto) {
+		Optional<Batch> optBatch = batchRepository.findById(newBatchDto.getBatchId());
+		if (optBatch.isPresent()) {
+			return Optional.ofNullable(null);
+		}
 		Batch batch = new Batch();
 		BeanUtils.copyProperties(newBatchDto, batch);
 		for (TechnologiesDto technologiesDto : newBatchDto.getTechnologiesDto()) {
@@ -186,7 +190,7 @@ public class AdminServiceImpl implements AdminService {
 				batch.setMentor(mentor.get());
 				mentor.get().getBatch().add(batch);
 			}
-			
+
 			batch.setTechnologies(technologies1);
 			batchRepository.save(batch);
 			return true;
@@ -310,9 +314,9 @@ public class AdminServiceImpl implements AdminService {
 			for (Batch batch : batchesFromDb.get()) {
 				NewBatchDto newBatchDto = new NewBatchDto();
 				BeanUtils.copyProperties(batch, newBatchDto);
-				Optional<String> optMentorName = Optional.ofNullable(batch.getMentor().getMentorName());
+				Optional<Mentor> optMentorName = Optional.ofNullable(batch.getMentor());
 				if (optMentorName.isPresent()) {
-					newBatchDto.setMentorName(batch.getMentor().getMentorName());
+					newBatchDto.setMentorName(optMentorName.get().getMentorName());
 				}
 				for (Technologies technologies : batch.getTechnologies()) {
 					TechnologiesDto technologiesDto = new TechnologiesDto();
@@ -334,14 +338,14 @@ public class AdminServiceImpl implements AdminService {
 			Optional<Employee> employeeFromDb = employeeRepository.findById(empId);
 			if (employeeFromDb.isPresent()) {
 				Optional<Roles> optRoles = rolesRepository.findByRoleName("ROLE_EMPLOYEE");
-				if (optRoles.isPresent()) {
+		 		if (optRoles.isPresent()) {
 					AppUser appUser = AppUser.builder().username(empId).password("Welcome123")
 							.roles(Lists.newArrayList()).build();
 					appUser.getRoles().add(optRoles.get());
 					Roles role = Roles.builder().roleName("ROLE_EMPLOYEE").appUser(Lists.newArrayList()).build();
 					role.getAppUser().add(appUser);
 					Optional<Batch> batch = batchRepository.findById(approveDto.getBatchId());
-					if (batch.isPresent()) {
+					if (batch.isPresent()) { 
 						employeeFromDb.get().setBatch(batch.get());
 						batch.get().getEmployee().add(employeeFromDb.get());
 						employeeFromDb.get().setEmployeeStatus(Status.ACTIVE);
@@ -355,7 +359,6 @@ public class AdminServiceImpl implements AdminService {
 						MessageDto messageDto = MessageDto.builder().message(message)
 								.emaild(employeeFromDb.get().getEmployeeEmailId()).build();
 						return Optional.ofNullable(messageDto);
-
 					} else {
 						throw new BatchDetailsNotFoundException("unable to find the batch details");
 					}

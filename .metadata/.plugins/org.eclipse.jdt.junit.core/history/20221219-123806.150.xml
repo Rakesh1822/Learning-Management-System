@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?><testrun name="TestAdminServiceImpl" project="learning-management-system" tests="7" started="7" failures="0" errors="0" ignored="0">
+  <testsuite name="com.te.lms.service.TestAdminServiceImpl" time="0.105" displayname="TestAdminServiceImpl" uniqueid="[engine:junit-jupiter]/[class:com.te.lms.service.TestAdminServiceImpl]">
+    <testcase name="TestDeletebatch_ReturnsTrue" classname="com.te.lms.service.TestAdminServiceImpl" time="0.028" displayname="TestDeletebatch_ReturnsTrue()" uniqueid="[engine:junit-jupiter]/[class:com.te.lms.service.TestAdminServiceImpl]/[method:TestDeletebatch_ReturnsTrue()]"/>
+    <testcase name="testRegisterMentor" classname="com.te.lms.service.TestAdminServiceImpl" time="0.022" displayname="testRegisterMentor()" uniqueid="[engine:junit-jupiter]/[class:com.te.lms.service.TestAdminServiceImpl]/[method:testRegisterMentor()]"/>
+    <testcase name="testGetRequestList" classname="com.te.lms.service.TestAdminServiceImpl" time="0.012" displayname="testGetRequestList()" uniqueid="[engine:junit-jupiter]/[class:com.te.lms.service.TestAdminServiceImpl]/[method:testGetRequestList()]"/>
+    <testcase name="TestDeletebatch_ReturnsFalse" classname="com.te.lms.service.TestAdminServiceImpl" time="0.01" displayname="TestDeletebatch_ReturnsFalse()" uniqueid="[engine:junit-jupiter]/[class:com.te.lms.service.TestAdminServiceImpl]/[method:TestDeletebatch_ReturnsFalse()]"/>
+    <testcase name="TestDeleteMentor_ReturnsFalse" classname="com.te.lms.service.TestAdminServiceImpl" time="0.008" displayname="TestDeleteMentor_ReturnsFalse()" uniqueid="[engine:junit-jupiter]/[class:com.te.lms.service.TestAdminServiceImpl]/[method:TestDeleteMentor_ReturnsFalse()]"/>
+    <testcase name="TestDeleteMentor_ReturnsTrue" classname="com.te.lms.service.TestAdminServiceImpl" time="0.008" displayname="TestDeleteMentor_ReturnsTrue()" uniqueid="[engine:junit-jupiter]/[class:com.te.lms.service.TestAdminServiceImpl]/[method:TestDeleteMentor_ReturnsTrue()]"/>
+    <testcase name="TestCreateBatch" classname="com.te.lms.service.TestAdminServiceImpl" time="0.016" displayname="TestCreateBatch()" uniqueid="[engine:junit-jupiter]/[class:com.te.lms.service.TestAdminServiceImpl]/[method:TestCreateBatch()]"/>
+  </testsuite>
+</testrun>

@@ -26,14 +26,14 @@ import com.te.lms.dto.UpdateMentorDto;
 import com.te.lms.exceptions.BatchDetailsNotUpdatedException;
 import com.te.lms.exceptions.BatchesNotFoundException;
 import com.te.lms.exceptions.EmployeeCannotBeApprovedException;
-import com.te.lms.exceptions.EmployeeNotFoundExcpetion;
+import com.te.lms.exceptions.EmployeeNotFoundException;
 import com.te.lms.exceptions.NoDataFoundInTheListException;
 import com.te.lms.exceptions.NoMentorsFoundException;
 import com.te.lms.exceptions.RegistrationFailedException;
 import com.te.lms.exceptions.UnableToDeleteBatchException;
-import com.te.lms.exceptions.UnableToDeleteMentor;
-import com.te.lms.exceptions.UnableToFindTheEmployee;
-import com.te.lms.exceptions.UnableToUpdateMentor;
+import com.te.lms.exceptions.UnableToDeleteMentorException;
+import com.te.lms.exceptions.UnableToFindTheEmployeeException;
+import com.te.lms.exceptions.UnableToUpdateMentorException;
 import com.te.lms.response.GeneralResponse;
 import com.te.lms.service.AdminService;
 
@@ -46,7 +46,7 @@ public class AdminController {
 
 	private final AdminService adminService;
 	private final Notify notify;
-
+ 
 	@PostMapping(path = "/register/mentor")
 	public GeneralResponse<String> registerMentor(@RequestBody MentorDto mentorDto) { // test cases written
 
@@ -90,7 +90,7 @@ public class AdminController {
 		if (isUpdated) {
 			return new GeneralResponse<String>("mentor has been updated", updateMentorDto.getMentorName());
 		}
-		throw new UnableToUpdateMentor("Unable to update the details please try again");
+		throw new UnableToUpdateMentorException("Unable to update the details please try again");
 	}
 
 	@PutMapping(path = "/mentor/delete/{empId}")
@@ -99,8 +99,8 @@ public class AdminController {
 		if (isRemoved) {
 			return new GeneralResponse<String>("Mentor has been removed", empId);
 		}
-		throw new UnableToDeleteMentor("unable to delete the mentor");
-	}
+		throw new UnableToDeleteMentorException("unable to delete the mentor");
+	} 
 
 	@PutMapping(path = "/batch/delete/{batchId}")
 	public GeneralResponse<String> deleteBatch(@PathVariable(name = "batchId") String batchId) {// test cases written
@@ -128,9 +128,9 @@ public class AdminController {
 		if (optdata.isPresent()) {
 			return new GeneralResponse<Object>("Employee Details", optdata.get());
 		}
-		throw new UnableToFindTheEmployee("Data not found");
+		throw new UnableToFindTheEmployeeException("Data not found");
 	}
-
+ 
 	@GetMapping(path = "/mentors")
 	public ResponseEntity<List<MentorDto>> getMentors() {
 		Optional<List<MentorDto>> mentorsFromDb = adminService.getMentors();
@@ -139,7 +139,6 @@ public class AdminController {
 		}
 		throw new NoMentorsFoundException("no mentors found");
 	}
-
 	@GetMapping(path = "/batches")
 	public ResponseEntity<List<NewBatchDto>> getBatch() {
 		Optional<List<NewBatchDto>> batchesFromDb = adminService.getBatchDetails();
@@ -147,7 +146,7 @@ public class AdminController {
 			return ResponseEntity.ok(batchesFromDb.get());
 		}
 		throw new BatchesNotFoundException("No batches Found");
-	}
+	} 
 
 	@PostMapping(path = "/requestlist/approve/{empId}")
 	public GeneralResponse<String> approveRequest(@PathVariable(name = "empId") String empId, // test cases written
@@ -174,7 +173,7 @@ public class AdminController {
 			notify.sendEmail(message, emailId, subject);
 			return new GeneralResponse<String>("employee has been  rejected succesfully", null);
 		}
-		throw new EmployeeNotFoundExcpetion("unable to find the employee");
+		throw new EmployeeNotFoundException("unable to find the employee");
 	}
 
 }

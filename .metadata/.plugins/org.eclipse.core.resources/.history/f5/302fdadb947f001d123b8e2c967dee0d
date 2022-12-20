@@ -1,0 +1,14 @@
+package com.te.lms.exceptions;
+
+public class UnableToFindTheEmployeeException extends RuntimeException {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
+	public UnableToFindTheEmployee(String message) {
+		super(message);
+	}
+	
+
+}

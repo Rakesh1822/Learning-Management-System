@@ -27,7 +27,7 @@ public class LearningManagementSystemApplication {
 		SpringApplication.run(LearningManagementSystemApplication.class, args);
 	}
 
-	@Bean
+	@Bean 
 	public CommandLineRunner runner() {
 		return args -> {
 

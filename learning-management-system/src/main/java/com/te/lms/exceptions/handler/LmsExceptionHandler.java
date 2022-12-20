@@ -12,14 +12,14 @@ import com.te.lms.exceptions.BatchDetailsNotFoundException;
 import com.te.lms.exceptions.BatchDetailsNotUpdatedException;
 import com.te.lms.exceptions.BatchesNotFoundException;
 import com.te.lms.exceptions.EmployeeCannotBeApprovedException;
-import com.te.lms.exceptions.EmployeeNotFoundExcpetion;
+import com.te.lms.exceptions.EmployeeNotFoundException;
 import com.te.lms.exceptions.NoDataFoundInTheListException;
 import com.te.lms.exceptions.NoMentorsFoundException;
 import com.te.lms.exceptions.RegistrationFailedException;
 import com.te.lms.exceptions.UnableToDeleteBatchException;
-import com.te.lms.exceptions.UnableToDeleteMentor;
-import com.te.lms.exceptions.UnableToFindTheEmployee;
-import com.te.lms.exceptions.UnableToUpdateMentor;
+import com.te.lms.exceptions.UnableToDeleteMentorException;
+import com.te.lms.exceptions.UnableToFindTheEmployeeException;
+import com.te.lms.exceptions.UnableToUpdateMentorException;
 
 @RestControllerAdvice
 public class LmsExceptionHandler {
@@ -41,8 +41,8 @@ public class LmsExceptionHandler {
 	}
 
 	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
-	@ExceptionHandler(UnableToFindTheEmployee.class)
-	public Map<String, String> handler(UnableToFindTheEmployee ex) {
+	@ExceptionHandler(UnableToFindTheEmployeeException.class)
+	public Map<String, String> handler(UnableToFindTheEmployeeException ex) {
 		Map<String, String> map = Maps.newHashMap();
 		map.put("message", ex.getMessage());
 		return map;
@@ -73,8 +73,8 @@ public class LmsExceptionHandler {
 	}
 
 	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
-	@ExceptionHandler(EmployeeNotFoundExcpetion.class)
-	public Map<String, String> handler(EmployeeNotFoundExcpetion ex) {
+	@ExceptionHandler(EmployeeNotFoundException.class)
+	public Map<String, String> handler(EmployeeNotFoundException ex) {
 		Map<String, String> map = Maps.newHashMap();
 		map.put("message", ex.getMessage());
 		return map;
@@ -105,19 +105,19 @@ public class LmsExceptionHandler {
 	}
 
 	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
-	@ExceptionHandler(UnableToUpdateMentor.class)
-	public Map<String, String> handler(UnableToUpdateMentor ex) {
+	@ExceptionHandler(UnableToUpdateMentorException.class)
+	public Map<String, String> handler(UnableToUpdateMentorException ex) {
 		Map<String, String> map = Maps.newHashMap();
 		map.put("message", ex.getMessage());
 		return map;
 	}
 
 	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
-	@ExceptionHandler(UnableToDeleteMentor.class)
-	public Map<String, String> handler(UnableToDeleteMentor ex) {
+	@ExceptionHandler(UnableToDeleteMentorException.class)
+	public Map<String, String> handler(UnableToDeleteMentorException ex) {
 		Map<String, String> map = Maps.newHashMap();
 		map.put("message", ex.getMessage());
 		return map;
 	}
-
+	
 }
